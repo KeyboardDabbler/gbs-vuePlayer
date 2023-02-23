@@ -10,7 +10,7 @@
             ? 'router-view-root-transition-wrapper'
             : 'router-view-transition-wrapper'
         ">
-        <Suspense>
+        <Suspense @pending="loading.start" @resolve="loading.finish">
           <component :is="Component" />
         </Suspense>
       </div>
@@ -18,7 +18,7 @@
   </router-view>
 
   <router-view v-else v-slot="{ Component }">
-    <Suspense>
+    <Suspense @pending="loading.start" @resolve="loading.finish">
       <component :is="Component" />
     </Suspense>
   </router-view>
@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { RouteLocationNormalized } from 'vue-router';
+import { useLoading } from '@/composables';
 
 interface Props {
   /**
@@ -37,6 +38,8 @@ interface Props {
   isRoot?: boolean;
   enableTransitions?: boolean;
 }
+
+const loading = useLoading();
 
 const props = withDefaults(defineProps<Props>(), {
   isRoot: false,
