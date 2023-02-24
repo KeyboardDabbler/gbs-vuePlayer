@@ -56,8 +56,8 @@ class PlayerElementStore {
     return state.isStretched;
   }
 
-  public set isStretched(newisStretched: boolean) {
-    state.isStretched = newisStretched;
+  public set isStretched(newIsStretched: boolean) {
+    state.isStretched = newIsStretched;
   }
 
   public get isFullscreenVideoPlayer(): boolean {
@@ -165,15 +165,15 @@ class PlayerElementStore {
 
   public constructor() {
     watch(
-      () => ({ currentItem: playbackManager.currentItem }),
+      () => playbackManager.currentItem,
       (newValue, oldValue) => {
         const router = useRouter();
 
         if (
-          (!newValue.currentItem &&
+          (!newValue &&
             router.currentRoute.value.fullPath === '/playback/video') ||
-          (newValue.currentItem &&
-            !oldValue?.currentItem &&
+          (newValue &&
+            !oldValue &&
             playbackManager.currentlyPlayingMediaType === 'Video')
         ) {
           /**
