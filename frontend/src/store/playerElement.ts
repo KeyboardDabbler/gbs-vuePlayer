@@ -1,3 +1,9 @@
+/**
+ * This store handles the state of the local player.
+ *
+ * In the other part, playbackManager is suited to handle the playback state in
+ * an agnostic way, regardless of where the media is being played (remotely or locally)
+ */
 import { cloneDeep } from 'lodash-es';
 import { nextTick, reactive, watch } from 'vue';
 // @ts-expect-error - No types on libass-wasm

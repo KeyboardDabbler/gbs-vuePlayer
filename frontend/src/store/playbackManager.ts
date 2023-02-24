@@ -1,3 +1,9 @@
+/**
+ * This store handles the state of the playback
+ *
+ * It must be used in an agnostic way to cover both local and remote playback.
+ * If you want to handle the state of the local player element, use playerElement store instead.
+ */
 import { reactive, ref, watch } from 'vue';
 import { shuffle, isNil, cloneDeep } from 'lodash-es';
 import {
