@@ -8,6 +8,7 @@ import { useRouter } from '@/composables';
 
 const playbackManager = playbackManagerStore();
 let subtitlesOctopus: SubtitlesOctopus | undefined;
+const fullscreenRoute = '/playback/video';
 
 /**
  * == INTERFACES ==
@@ -61,7 +62,7 @@ class PlayerElementStore {
   }
 
   public get isFullscreenVideoPlayer(): boolean {
-    return useRouter().currentRoute.value.fullPath === '/playback/video';
+    return useRouter().currentRoute.value.fullPath === fullscreenRoute;
   }
 
   /**
@@ -76,7 +77,7 @@ class PlayerElementStore {
     const router = useRouter();
 
     if (!this.isFullscreenVideoPlayer) {
-      router.push('/playback/video');
+      router.push(fullscreenRoute);
     } else {
       router.replace(
         typeof router.options.history.state.back === 'string'
@@ -171,7 +172,7 @@ class PlayerElementStore {
 
         if (
           (!newValue &&
-            router.currentRoute.value.fullPath === '/playback/video') ||
+            router.currentRoute.value.fullPath === fullscreenRoute) ||
           (newValue &&
             !oldValue &&
             playbackManager.currentlyPlayingMediaType === 'Video')
