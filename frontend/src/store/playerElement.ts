@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash-es';
-import { nextTick, reactive } from 'vue';
+import { nextTick, reactive, watch } from 'vue';
 // @ts-expect-error - No types on libass-wasm
 import SubtitlesOctopus from '@jellyfin/libass-wasm';
 import subtitlesOctopusWorkerUrl from '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.js?url';
@@ -162,6 +162,31 @@ class PlayerElementStore {
       }
     }
   };
+
+  public constructor() {
+    watch(
+      () => ({ currentItem: playbackManager.currentItem }),
+      (newValue, oldValue) => {
+        const router = useRouter();
+
+        if (
+          (!newValue.currentItem &&
+            router.currentRoute.value.fullPath === '/playback/video') ||
+          (newValue.currentItem &&
+            !oldValue?.currentItem &&
+            playbackManager.currentlyPlayingMediaType === 'Video')
+        ) {
+          /**
+           * If no item is present, we either manually loaded this or playback is stopped
+           * OR
+           * If there was no item and there's now a video, default to going FS
+           */
+          playerElement.toggleFullscreenVideoPlayer();
+        }
+      },
+      { immediate: true }
+    );
+  }
 }
 
 const playerElement = new PlayerElementStore();
