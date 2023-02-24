@@ -621,18 +621,25 @@ class PlaybackManagerStore {
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
    */
-  private _reportPlaybackStopped = async (itemId: string): Promise<void> => {
+  private _reportPlaybackStopped = async (
+    itemId: string,
+    sessionId = state.playSessionId,
+    currentTime = this.currentTime,
+    updateState = true
+  ): Promise<void> => {
     const remote = useRemote();
 
     await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped({
       playbackStopInfo: {
         ItemId: itemId,
-        PlaySessionId: state.playSessionId,
-        PositionTicks: msToTicks((this.currentTime || 0) * 1000)
+        PlaySessionId: sessionId,
+        PositionTicks: msToTicks((currentTime || 0) * 1000)
       }
     });
 
-    state.lastProgressUpdate = Date.now();
+    if (updateState) {
+      state.lastProgressUpdate = Date.now();
+    }
   };
 
   /**
@@ -837,24 +844,22 @@ class PlaybackManagerStore {
   };
 
   public stop = (): void => {
+    const sessionId = String(state.playSessionId || '');
+    const time = Number(this.currentTime);
+    const itemId = String(this.currentItem?.Id || '');
+    const volume = Number(this.currentVolume);
+
+    Object.assign(state, defaultState);
+    this.currentVolume = volume;
+
     window.setTimeout(async () => {
       const remote = useRemote();
 
       try {
-        if (
-          !isNil(this.currentItem) &&
-          !isNil(this.currentItem.Id) &&
-          !isNil(remote.auth.currentUser)
-        ) {
-          this._reportPlaybackStopped(this.currentItem.Id);
+        if (sessionId && itemId && time && remote.auth.currentUser) {
+          await this._reportPlaybackStopped(itemId, sessionId, time, false);
         }
-      } catch {
-      } finally {
-        const volume = this.currentVolume;
-
-        Object.assign(state, defaultState);
-        this.currentVolume = volume;
-      }
+      } catch {}
     });
   };
 
