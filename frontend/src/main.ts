@@ -5,11 +5,7 @@
  */
 import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
-<<<<<<< HEAD
 import { getFontFaces } from '@/utils/data-manipulation';
-=======
-import { useEventListener } from '@vueuse/core';
->>>>>>> 9ddffb1e (feat: ensure all resources are loaded before mount (#2430))
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';
