@@ -6,7 +6,11 @@
 import { createApp, effectScope } from 'vue';
 import { routes } from 'vue-router/auto-routes';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { getFontFaces } from '@/utils/data-manipulation';
+=======
+import { useEventListener } from '@vueuse/core';
+>>>>>>> 9ddffb1e (feat: ensure all resources are loaded before mount (#2430))
 =======
 import { useEventListener } from '@vueuse/core';
 >>>>>>> 9ddffb1e (feat: ensure all resources are loaded before mount (#2430))
@@ -49,7 +53,11 @@ app.directive('hide', hideDirective);
  */
 await Promise.all([
   router.isReady(),
+<<<<<<< HEAD
   ...getFontFaces().map(font => font.load())
+=======
+  ...[...document.fonts.keys()].map(font => font.load())
+>>>>>>> 9ddffb1e (feat: ensure all resources are loaded before mount (#2430))
 ]);
 await document.fonts.ready;
 
