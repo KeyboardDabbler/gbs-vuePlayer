@@ -3,13 +3,8 @@
  * for TypeScript compiler (check tsconfig.json)
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
-import { createApp, effectScope } from 'vue';
+import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
-<<<<<<< HEAD
-import { getFontFaces } from '@/utils/data-manipulation';
-=======
-import { useEventListener } from '@vueuse/core';
->>>>>>> 9ddffb1e (feat: ensure all resources are loaded before mount (#2430))
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';
@@ -45,6 +40,7 @@ app.use(vuetify);
 app.directive('hide', hideDirective);
 
 /**
+ * Ensure everything is fully loaded before mounting the app
  * Ensure everything is fully loaded before mounting the app
  */
 await Promise.all([
