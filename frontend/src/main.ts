@@ -3,8 +3,9 @@
  * for TypeScript compiler (check tsconfig.json)
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
-import { createApp } from 'vue';
+import { createApp, effectScope } from 'vue';
 import { routes } from 'vue-router/auto-routes';
+import { getFontFaces } from '@/utils/data-manipulation';
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';
